@@ -1,0 +1,28 @@
+QueryType = GraphQL::ObjectType.define do
+  name "Query"
+  description "The query root for this schema"
+
+  field :movie do
+    type MovieType
+    argument :id, !types.ID
+    resolve -> (obj, args, ctx) {
+      Movie.find(args[:id])
+    }
+  end
+
+  field :movies do
+    type types[MovieType]
+    argument :count, !types.Int
+    resolve -> (obj, args, ctx) {
+      Movie.limit(args[:count])
+    }
+  end
+
+  field :actor do
+    type ActorType
+    argument :id, !types.ID
+    resolve -> (obj, args, ctx) {
+      Actor.find(args[:id])
+    }
+  end
+end
